@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: untitled/DevOpsTest
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - apps_network
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: usernames_api/usernames_api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: NamesList
+    networks:
+      - apps_network
+    depends_on:
+      - db
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: NamesList
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - apps_network
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - apps_network
+    depends_on:
+      - db
+
+networks:
+  apps_network:
+    external:
+      name: apps_network
