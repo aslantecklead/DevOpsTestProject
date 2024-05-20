@@ -22,7 +22,7 @@ git clone --recurse-submodules git@github.com:aslantecklead/DevOpsTestProject.gi
 cd DevOpsTestProject
 ```
 
-3. Перейдите в каталог проекта:
+3. Создайте и запустите сервисы с помощью Docker Compose:
 
 ```sh
 docker-compose up --build
